@@ -5,17 +5,24 @@ class APIEndpoint {
   final String path;
   final HTTPMethod method;
   final Map<String, String>? headers;
+  final Map<String, String>? queryParams;
   final dynamic body;
 
   APIEndpoint({
     required this.path,
     required this.method,
     this.headers,
+    this.queryParams,
     this.body,
   });
 
-  Uri get url => Uri.parse('https://yourapi.com$path');
+  // Build the URL with query parameters
+  Uri get url {
+    final uri = Uri.parse('https://api.themoviedb.org/3$path');
+    return uri.replace(queryParameters: queryParams);
+  }
 }
+
 
 
 enum HTTPMethod { GET, POST, PUT, DELETE }

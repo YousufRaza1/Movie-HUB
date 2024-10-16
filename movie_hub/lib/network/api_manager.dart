@@ -15,33 +15,40 @@ class APIManager {
     try {
       http.Response response;
 
+      // Default headers
+      final defaultHeaders = {'Content-Type': 'application/json'};
+      final headers = {...defaultHeaders, ...?endpoint.headers};
+
       // Choose the HTTP method
       switch (endpoint.method) {
         case HTTPMethod.GET:
-          response = await http.get(endpoint.url, headers: endpoint.headers);
+          response = await http.get(endpoint.url, headers: headers)
+              .timeout(Duration(seconds: 30)); // Timeout handling
           break;
         case HTTPMethod.POST:
           response = await http.post(
             endpoint.url,
-            headers: endpoint.headers,
+            headers: headers,
             body: jsonEncode(endpoint.body),
-          );
+          ).timeout(Duration(seconds: 30));
           break;
         case HTTPMethod.PUT:
           response = await http.put(
             endpoint.url,
-            headers: endpoint.headers,
+            headers: headers,
             body: jsonEncode(endpoint.body),
-          );
+          ).timeout(Duration(seconds: 30));
           break;
         case HTTPMethod.DELETE:
-          response = await http.delete(endpoint.url, headers: endpoint.headers);
+          response = await http.delete(endpoint.url, headers: headers)
+              .timeout(Duration(seconds: 30));
           break;
       }
 
       // Handle response
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(response.body);
+        print(data);
         return APIResult.success(fromJson(data));
       } else {
         return APIResult.failure(
