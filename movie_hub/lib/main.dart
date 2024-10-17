@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'common/theme_manager/theme_manager.dart';
 import 'base_module/buttom_navigation_screen.dart';
+import 'package:get/get.dart';
 
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeDataStyle.light,
       darkTheme: ThemeDataStyle.dark,
       home: BottomNavScreen(),

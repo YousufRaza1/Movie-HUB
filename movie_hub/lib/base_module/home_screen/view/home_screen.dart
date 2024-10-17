@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../network/api_manager.dart';
-import '../../../network/api_end_point.dart';
 import 'package:get/get.dart';
 import 'banner_view.dart';
 import 'dart:async';
 import 'horizontal_movie_list.dart';
-import '../model/home_screen_models.dart';
 import '../view_model/home_view_model.dart';
 import 'top_rated_movie_horizontal_card_view.dart';
 import 'tranding_horizontal_card_view.dart';
+import '../../../video_player/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -49,21 +47,31 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Obx(
           () => Column(
             children: [
+
               viewModel.listOfUpcomingMovies.length == 0
-                  ? Text('${viewModel.listOfUpcomingMovies.length}')
-                  : BannerView(movieResult: viewModel.listOfUpcomingMovies[currentIndex]),
+                  ? BannerViewLoader()
+                  : AnimatedSwitcher(
+                duration: Duration(seconds: 1),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                child: BannerView(
+                    key: ValueKey<int>(currentIndex),
+                    movieResult: viewModel.listOfUpcomingMovies[currentIndex]
+                ),
+              ),
 
               MovieTypeTitle(title: 'Popular movies'),
               SizedBox(height: 5),
-              HorizontalMovieList(movies: viewModel.listOfPopularMovies),
+              viewModel.listOfPopularMovies.length > 0 ? HorizontalMovieList(movies: viewModel.listOfPopularMovies): HorizontalMovieListLoader(),
 
               MovieTypeTitle(title: 'Top rated movies'),
               SizedBox(height: 5),
-              TopRatedHorizontalMovieList(movies: viewModel.listOfTopRatedMovies),
+              viewModel.listOfTopRatedMovies.length > 0 ? TopRatedHorizontalMovieList(movies: viewModel.listOfTopRatedMovies):HorizontalMovieListLoader(),
 
-              MovieTypeTitle(title: 'Top rated movies'),
+              MovieTypeTitle(title: 'Trading movies'),
               SizedBox(height: 5),
-              TrandingHorizontalMovieList(movies: viewModel.listOfTrandingMovies),
+              viewModel.listOfTrandingMovies.length > 0 ? TrandingHorizontalMovieList(movies: viewModel.listOfTrandingMovies):HorizontalMovieListLoader(),
 
 
             ],

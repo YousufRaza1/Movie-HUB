@@ -1,19 +1,21 @@
-import 'dart:async';
+// To parse this JSON data, do
+//
+//     final upcomingMovieList = upcomingMovieListFromJson(jsonString);
+
 import 'dart:convert';
-UpcomingMoviesList popularMoviesListFromJson(String str) =>
-    UpcomingMoviesList.fromJson(json.decode(str));
 
-String popularMoviesListToJson(UpcomingMoviesList data) =>
-    json.encode(data.toJson());
+UpcomingMovieList upcomingMovieListFromJson(String str) => UpcomingMovieList.fromJson(json.decode(str));
 
-class UpcomingMoviesList {
+String upcomingMovieListToJson(UpcomingMovieList data) => json.encode(data.toJson());
+
+class UpcomingMovieList {
   Dates dates;
   int page;
-  List<Result> results;
+  List<UpcomingMovie> results;
   int totalPages;
   int totalResults;
 
-  UpcomingMoviesList({
+  UpcomingMovieList({
     required this.dates,
     required this.page,
     required this.results,
@@ -21,15 +23,13 @@ class UpcomingMoviesList {
     required this.totalResults,
   });
 
-  factory UpcomingMoviesList.fromJson(Map<String, dynamic> json) =>
-      UpcomingMoviesList(
-        dates: Dates.fromJson(json["dates"]),
-        page: json["page"],
-        results:
-        List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
-      );
+  factory UpcomingMovieList.fromJson(Map<String, dynamic> json) => UpcomingMovieList(
+    dates: Dates.fromJson(json["dates"]),
+    page: json["page"],
+    results: List<UpcomingMovie>.from(json["results"].map((x) => UpcomingMovie.fromJson(x))),
+    totalPages: json["total_pages"],
+    totalResults: json["total_results"],
+  );
 
   Map<String, dynamic> toJson() => {
     "dates": dates.toJson(),
@@ -55,19 +55,17 @@ class Dates {
   );
 
   Map<String, dynamic> toJson() => {
-    "maximum":
-    "${maximum.year.toString().padLeft(4, '0')}-${maximum.month.toString().padLeft(2, '0')}-${maximum.day.toString().padLeft(2, '0')}",
-    "minimum":
-    "${minimum.year.toString().padLeft(4, '0')}-${minimum.month.toString().padLeft(2, '0')}-${minimum.day.toString().padLeft(2, '0')}",
+    "maximum": "${maximum.year.toString().padLeft(4, '0')}-${maximum.month.toString().padLeft(2, '0')}-${maximum.day.toString().padLeft(2, '0')}",
+    "minimum": "${minimum.year.toString().padLeft(4, '0')}-${minimum.month.toString().padLeft(2, '0')}-${minimum.day.toString().padLeft(2, '0')}",
   };
 }
 
-class Result {
+class UpcomingMovie {
   bool adult;
   String backdropPath;
   List<int> genreIds;
   int id;
-  OriginalLanguage originalLanguage;
+  String originalLanguage;
   String originalTitle;
   String overview;
   double popularity;
@@ -78,7 +76,7 @@ class Result {
   double voteAverage;
   int voteCount;
 
-  Result({
+  UpcomingMovie({
     required this.adult,
     required this.backdropPath,
     required this.genreIds,
@@ -95,13 +93,12 @@ class Result {
     required this.voteCount,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory UpcomingMovie.fromJson(Map<String, dynamic> json) => UpcomingMovie(
     adult: json["adult"],
     backdropPath: json["backdrop_path"],
     genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
     id: json["id"],
-    originalLanguage:
-    originalLanguageValues.map[json["original_language"]]!,
+    originalLanguage: json["original_language"],
     originalTitle: json["original_title"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
@@ -118,40 +115,15 @@ class Result {
     "backdrop_path": backdropPath,
     "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
     "id": id,
-    "original_language": originalLanguageValues.reverse[originalLanguage],
+    "original_language": originalLanguage,
     "original_title": originalTitle,
     "overview": overview,
     "popularity": popularity,
     "poster_path": posterPath,
-    "release_date":
-    "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
+    "release_date": "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
     "title": title,
     "video": video,
     "vote_average": voteAverage,
     "vote_count": voteCount,
   };
 }
-
-enum OriginalLanguage { EN, JA, XX, ZH }
-
-final originalLanguageValues = EnumValues({
-  "en": OriginalLanguage.EN,
-  "ja": OriginalLanguage.JA,
-  "xx": OriginalLanguage.XX,
-  "zh": OriginalLanguage.ZH
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
-}
-
-
-

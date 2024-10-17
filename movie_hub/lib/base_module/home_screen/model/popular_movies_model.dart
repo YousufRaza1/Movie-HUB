@@ -1,29 +1,29 @@
 // To parse this JSON data, do
 //
-//     final popularMoviesList = popularMoviesListFromJson(jsonString);
+//     final popularMovieList = popularMovieListFromJson(jsonString);
 
 import 'dart:convert';
 
-PopularMoviesList popularMoviesListFromJson(String str) => PopularMoviesList.fromJson(json.decode(str));
+PopularMovieList popularMovieListFromJson(String str) => PopularMovieList.fromJson(json.decode(str));
 
-String popularMoviesListToJson(PopularMoviesList data) => json.encode(data.toJson());
+String popularMovieListToJson(PopularMovieList data) => json.encode(data.toJson());
 
-class PopularMoviesList {
+class PopularMovieList {
   int page;
-  List<Movie> results;
+  List<PopularMovie> results;
   int totalPages;
   int totalResults;
 
-  PopularMoviesList({
+  PopularMovieList({
     required this.page,
     required this.results,
     required this.totalPages,
     required this.totalResults,
   });
 
-  factory PopularMoviesList.fromJson(Map<String, dynamic> json) => PopularMoviesList(
+  factory PopularMovieList.fromJson(Map<String, dynamic> json) => PopularMovieList(
     page: json["page"],
-    results: List<Movie>.from(json["results"].map((x) => Movie.fromJson(x))),
+    results: List<PopularMovie>.from(json["results"].map((x) => PopularMovie.fromJson(x))),
     totalPages: json["total_pages"],
     totalResults: json["total_results"],
   );
@@ -36,12 +36,12 @@ class PopularMoviesList {
   };
 }
 
-class Movie {
+class PopularMovie {
   bool adult;
   String backdropPath;
   List<int> genreIds;
   int id;
-  OriginalLanguage originalLanguage;
+  String originalLanguage;
   String originalTitle;
   String overview;
   double popularity;
@@ -52,7 +52,7 @@ class Movie {
   double voteAverage;
   int voteCount;
 
-  Movie({
+  PopularMovie({
     required this.adult,
     required this.backdropPath,
     required this.genreIds,
@@ -69,12 +69,12 @@ class Movie {
     required this.voteCount,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+  factory PopularMovie.fromJson(Map<String, dynamic> json) => PopularMovie(
     adult: json["adult"],
     backdropPath: json["backdrop_path"],
     genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
     id: json["id"],
-    originalLanguage: originalLanguageValues.map[json["original_language"]]!,
+    originalLanguage: json["original_language"],
     originalTitle: json["original_title"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
@@ -91,7 +91,7 @@ class Movie {
     "backdrop_path": backdropPath,
     "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
     "id": id,
-    "original_language": originalLanguageValues.reverse[originalLanguage],
+    "original_language": originalLanguage,
     "original_title": originalTitle,
     "overview": overview,
     "popularity": popularity,
@@ -102,30 +102,4 @@ class Movie {
     "vote_average": voteAverage,
     "vote_count": voteCount,
   };
-}
-
-enum OriginalLanguage {
-  EN,
-  ES,
-  KO,
-  SV
-}
-
-final originalLanguageValues = EnumValues({
-  "en": OriginalLanguage.EN,
-  "es": OriginalLanguage.ES,
-  "ko": OriginalLanguage.KO,
-  "sv": OriginalLanguage.SV
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

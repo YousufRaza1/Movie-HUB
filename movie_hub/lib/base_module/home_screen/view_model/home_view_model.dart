@@ -9,8 +9,8 @@ import '../model/tranding_movie_list_model.dart';
 
 
 class HomeViewController extends GetxController {
-  RxList<Result> listOfUpcomingMovies = <Result>[].obs;
-  RxList<Movie> listOfPopularMovies =  <Movie>[].obs;
+  RxList<UpcomingMovie> listOfUpcomingMovies = <UpcomingMovie>[].obs;
+  RxList<PopularMovie> listOfPopularMovies =  <PopularMovie>[].obs;
   RxList<TopRatedMovie> listOfTopRatedMovies =  <TopRatedMovie>[].obs;
   RxList<TrandingMovie> listOfTrandingMovies = <TrandingMovie>[].obs;
 
@@ -31,22 +31,20 @@ class HomeViewController extends GetxController {
     );
 
     // Call the API manager
-    final result = await APIManager.instance.request<UpcomingMoviesList>(
+    final result = await APIManager.instance.request<UpcomingMovieList>(
       endpoint,
-          (data) => UpcomingMoviesList.fromJson(
-          data), // Convert the raw response into PopularMoviesList
+          (data) => UpcomingMovieList.fromJson(data), // Convert the raw response into PopularMoviesList
     );
 
     // Handle the result
     if (result.data != null) {
-      result.data?.results.forEach((movie) {
-        print('Movie Title: ${movie.title}');
-      });
       if (result.data?.results != null) {
         listOfUpcomingMovies.addAll(result.data!.results!);
       }
+      print('upcoming success');
     } else {
       // Handle the error
+      print('upcoming fail');
       print('Error: ${result.error?.message}');
     }
   }
@@ -68,21 +66,20 @@ class HomeViewController extends GetxController {
     );
 
     // Call the API manager
-    final result = await APIManager.instance.request<PopularMoviesList>(
+    final result = await APIManager.instance.request<PopularMovieList>(
       endpoint,
-          (data) => PopularMoviesList.fromJson(data), // Convert the raw response into PopularMoviesList
+          (data) => PopularMovieList.fromJson(data), // Convert the raw response into PopularMoviesList
     );
 
     // Handle the result
     if (result.data != null) {
-      result.data?.results.forEach((movie) {
-        print('Movie Title: ${movie.title}');
-      });
       if (result.data?.results != null) {
         listOfPopularMovies.addAll(result.data!.results!);
       }
+      print('popular success');
     } else {
       // Handle the error
+      print('popular fail');
       print('Error: ${result.error?.message}');
     }
   }
@@ -110,14 +107,13 @@ class HomeViewController extends GetxController {
 
     // Handle the result
     if (result.data != null) {
-      result.data?.results.forEach((movie) {
-        print('Movie Title: ${movie.title}');
-      });
       if (result.data?.results != null) {
         listOfTopRatedMovies.addAll(result.data!.results!);
       }
+      print('top rated success');
     } else {
       // Handle the error
+      print('top rated fail');
       print('Error: ${result.error?.message}');
     }
   }
@@ -146,14 +142,13 @@ class HomeViewController extends GetxController {
 
     // Handle the result
     if (result.data != null) {
-      result.data?.results.forEach((movie) {
-        print('Movie Title: ${movie.title}');
-      });
       if (result.data?.results != null) {
         listOfTrandingMovies.addAll(result.data!.results!);
       }
+      print('tranding success');
     } else {
       // Handle the error
+      print('tranding fail');
       print('Error: ${result.error?.message}');
     }
   }

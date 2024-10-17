@@ -43,10 +43,10 @@ class MovieCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 8), // Add some margin between cards
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onSurface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
+            color: Theme.of(context).colorScheme.surface,
             blurRadius: 6,
             offset: Offset(2, 2),
           ),
@@ -79,7 +79,7 @@ class MovieCard extends StatelessWidget {
                   movie.title,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.surface,
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
@@ -92,7 +92,7 @@ class MovieCard extends StatelessWidget {
                     SizedBox(width: 4),
                     Text(
                       movie.voteAverage.toString(),
-                      style: TextStyle(fontSize: 12,color: Colors.black),
+                      style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.surface),
                     ),
                   ],
                 ),
