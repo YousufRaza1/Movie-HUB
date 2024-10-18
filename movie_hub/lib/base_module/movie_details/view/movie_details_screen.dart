@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../view_model/movie_details_view_model.dart';
+import '../../watch_list/view_model/watch_list_view_model.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
+  final bool fromWatchlist;
 
-  MovieDetailsScreen({required this.movieId});
+
+  MovieDetailsScreen({required this.movieId, required this.fromWatchlist});
 
   @override
   _MovieDetailsScreenState createState() => _MovieDetailsScreenState();
@@ -13,11 +16,20 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   final MovieDetailsViewModel movieDetailsVM = MovieDetailsViewModel();
+  // final WatchListViewModel viewModel = Get.find();
 
   @override
   void initState() {
     super.initState();
     movieDetailsVM.getDetailsOfMovie(widget.movieId);
+  }
+
+  @override
+  void dispose() {
+    // Don't forget to unregister
+    // viewModel.isApiCalled.value = false;
+
+    super.dispose();
   }
 
   @override
@@ -89,34 +101,27 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 50, // Set the height
-                        child: FilledButton(
-                          onPressed: () {
-
-                          },
-                          style: FilledButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // Corner radius of 10
-                            ),
-                          ),
-                          child: Text('Add to Favorite'),
-                        ),
-                      ),
-                    ),
                     SizedBox(width: 10),
                     Expanded(
                       child: SizedBox(
                         height: 50, // Set the height
                         child: FilledButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (widget.fromWatchlist) {
+                            movieDetailsVM.removeFromWatchList(movie.id);
+                            } else {
+                              movieDetailsVM.addToFavorite(movie.id);
+                            }
+                          },
                           style: FilledButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // Corner radius of 10
+                              borderRadius: BorderRadius.circular(
+                                  10), // Corner radius of 10
                             ),
                           ),
-                          child: Text('Add to Watchlist'),
+                          child: widget.fromWatchlist
+                              ? Text('Remove from Watchlist')
+                              : Text('Add to Watchlist'),
                         ),
                       ),
                     )

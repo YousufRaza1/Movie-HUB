@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import '../model/home_screen_models.dart';
 import '../model/popular_movies_model.dart';
-import '../../movie_details_screen/view/movie_details_screen.dart';
+import '../../movie_details/view/movie_details_screen.dart';
 import 'package:get/get.dart';
 
 // Your Result class and related dependencies go here.
@@ -45,7 +45,7 @@ class MovieCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print('movie id = ${movie.id}');
-        Get.to(MovieDetailsScreen(movieId: movie.id));
+        Get.to(MovieDetailsScreen(movieId: movie.id,fromWatchlist: false));
 
       },
       child: Container(

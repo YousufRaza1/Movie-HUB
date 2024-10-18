@@ -5,6 +5,7 @@ import '../../../network/api_end_point.dart';
 import '../model/popular_movies_model.dart';
 import '../model/top_rated_movie_model.dart';
 import '../model/tranding_movie_list_model.dart';
+import '../../watch_list/model/favorite_movie_List.dart';
 
 
 
@@ -13,6 +14,7 @@ class HomeViewController extends GetxController {
   RxList<PopularMovie> listOfPopularMovies =  <PopularMovie>[].obs;
   RxList<TopRatedMovie> listOfTopRatedMovies =  <TopRatedMovie>[].obs;
   RxList<TrandingMovie> listOfTrandingMovies = <TrandingMovie>[].obs;
+  RxList<FavoriteMovie> listOfFavoriteMovies =  <FavoriteMovie>[].obs;
 
 
   void fetchIncomingMovies() async {
@@ -48,6 +50,10 @@ class HomeViewController extends GetxController {
       print('Error: ${result.error?.message}');
     }
   }
+
+
+
+
 
 
   void fetchPopularMovies() async {

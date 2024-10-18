@@ -6,7 +6,7 @@ import '../../../network/api_end_point.dart';
 class MovieDetailsViewModel extends GetxController {
   Rxn<MovieDetailsModel> movieDetails = Rxn<MovieDetailsModel>();
 
-  void addToFavorite() async {
+  void addToFavorite(int movieId) async {
 
     final APIEndpoint endpoint = APIEndpoint(
         path: '/account/21572778/favorite?session_id=7f54d9be5fb4c228621bd97367ae3f420c962f22',
@@ -20,7 +20,7 @@ class MovieDetailsViewModel extends GetxController {
         'session_id': '7f54d9be5fb4c228621bd97367ae3f420c962f22',
       },
       body: {
-        'media_id': 1029235,
+        'media_id': movieId,
         'media_type': 'movie',
         'favorite': true,
       }
@@ -33,10 +33,48 @@ class MovieDetailsViewModel extends GetxController {
 
     // Handle the result
     if (result.data != null) {
+      print('add to favorite success');
       print(result.data!);
     } else {
       // Handle the error
-      print('movie details fail');
+      print('add to favorite fail');
+      print('Error: ${result.error?.message}');
+    }
+
+  }
+
+  void removeFromWatchList(int movieId) async {
+
+    final APIEndpoint endpoint = APIEndpoint(
+        path: '/account/21572778/favorite?session_id=7f54d9be5fb4c228621bd97367ae3f420c962f22',
+        method: HTTPMethod.POST,
+        headers: {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
+        },
+        queryParams: {
+          'session_id': '7f54d9be5fb4c228621bd97367ae3f420c962f22',
+        },
+        body: {
+          'media_id': movieId,
+          'media_type': 'movie',
+          'favorite': false,
+        }
+    );
+
+    final result = await APIManager.instance.request<AddFavoriteSuccess>(
+      endpoint,
+          (data) => AddFavoriteSuccess.fromJson(data), // Convert the raw response into MovieDetailsModel
+    );
+
+    // Handle the result
+    if (result.data != null) {
+      print('add to favorite success');
+      print(result.data!);
+    } else {
+      // Handle the error
+      print('add to favorite fail');
       print('Error: ${result.error?.message}');
     }
 

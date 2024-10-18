@@ -5,8 +5,10 @@ import 'dart:async';
 import 'horizontal_movie_list.dart';
 import '../view_model/home_view_model.dart';
 import 'top_rated_movie_horizontal_card_view.dart';
+import 'top_rated_movie_horizontal_card_view.dart';
 import 'tranding_horizontal_card_view.dart';
 import '../../../video_player/video_player.dart';
+import 'favorite_movie_list_horizontal_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final viewModel = HomeViewController();
   int currentIndex = 0;
   Timer? _timer;
+
 
   @override
   void initState() {
@@ -72,6 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
               MovieTypeTitle(title: 'Trading movies'),
               SizedBox(height: 5),
               viewModel.listOfTrandingMovies.length > 0 ? TrandingHorizontalMovieList(movies: viewModel.listOfTrandingMovies):HorizontalMovieListLoader(),
+              // MovieTypeTitle(title: 'Favorite movies'),
+              // SizedBox(height: 5),
+              // viewModel.listOfFavoriteMovies.length > 0 ? HorizontalFavoriteMovieList(movies: viewModel.listOfFavoriteMovies): HorizontalMovieListLoader(),
 
 
             ],

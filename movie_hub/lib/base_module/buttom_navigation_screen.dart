@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'home_screen/view/home_screen.dart';
+import 'home/view/home_screen.dart';
+import 'watch_list/view/watchlist_screen.dart';
+import 'package:get/get.dart';
+import 'watch_list/view_model/watch_list_view_model.dart';
+import 'search_movies/view/search_screen.dart';
 class BottomNavScreen extends StatefulWidget {
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
@@ -7,13 +11,14 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
+  final WatchListViewModel _viewModel = Get.put(WatchListViewModel());
 
   // List of widget pages corresponding to each tab
   final List<Widget> _pages = [
     HomeScreen(),
-    SearchScreen(),
+    SearchMoviesScreen(),
+    WatchListScreen(),
     SettingsScreen(),
-    BookmarkScreen(),
   ];
 
   @override
@@ -41,12 +46,12 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.bookmark),
+            label: 'Watchlist',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Bookmark',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
@@ -54,17 +59,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 }
 
-
-
-// Search Screen
-class SearchScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Search Screen', style: TextStyle(fontSize: 24)),
-    );
-  }
-}
 
 // Settings Screen
 class SettingsScreen extends StatelessWidget {

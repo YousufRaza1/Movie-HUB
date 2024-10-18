@@ -48,6 +48,7 @@ class APIManager {
       // Handle response
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(response.body);
+        print(data);
         return APIResult.success(fromJson(data));
       } else {
         return APIResult.failure(
