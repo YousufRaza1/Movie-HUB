@@ -13,6 +13,7 @@ class SearchMoviesScreen extends StatefulWidget {
 class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
   final TextEditingController _searchController = TextEditingController();
   final SearchedMoviesListViewModel viewModel = Get.put(SearchedMoviesListViewModel());
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -20,20 +21,28 @@ class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
 
     // Search for movies when text in the search field changes
     _searchController.addListener(() {
-      print('changed');
       if (!viewModel.isLoading.value) {
-        viewModel.getMoviesBySearch(_searchController.text,1);
+        viewModel.getMoviesBySearch(_searchController.text, 1);
       }
     });
 
     // Load default movies
-    viewModel.getMoviesBySearch('',1);
+    viewModel.getMoviesBySearch('', 1);
+
+    // Add scroll listener for pagination
+    _scrollController.addListener(() {
+
+      if (_scrollController.position.extentAfter <= 2000.0 &&
+          !viewModel.isLoading.value) {
+        viewModel.loadMoreMovies(_searchController.text);
+      }
+    });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -63,6 +72,7 @@ class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
               SizedBox(height: 16),
               Expanded(
                 child: GridView.builder(
+                  controller: _scrollController, // Attach scroll controller for pagination
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
@@ -74,7 +84,7 @@ class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
                     final movie = viewModel.movies[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.to(MovieDetailsScreen(movieId: movie.id,fromWatchlist: false));
+                        Get.to(MovieDetailsScreen(movieId: movie.id, fromWatchlist: false));
                       },
                       child: Card(
                         color: Theme.of(context).colorScheme.onSurface,
@@ -115,11 +125,16 @@ class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     );
                   },
                 ),
               ),
+              if (viewModel.isLoading.value) // Show loading indicator when fetching new data
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                ),
             ],
           )),
         ),
