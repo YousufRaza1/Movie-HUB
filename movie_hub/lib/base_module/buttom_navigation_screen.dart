@@ -11,7 +11,6 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
-  final WatchListViewModel _viewModel = Get.put(WatchListViewModel());
 
   // List of widget pages corresponding to each tab
   final List<Widget> _pages = [

@@ -4,12 +4,9 @@ import 'base_module/buttom_navigation_screen.dart';
 import 'package:get/get.dart';
 import 'base_module/watch_list/view_model/watch_list_view_model.dart';
 
-
 void main() {
-  runApp(
-
-      const MyApp()
-  );
+  Get.put(WatchListViewModel());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

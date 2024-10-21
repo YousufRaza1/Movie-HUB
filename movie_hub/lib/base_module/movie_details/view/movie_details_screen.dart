@@ -16,7 +16,8 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   final MovieDetailsViewModel movieDetailsVM = MovieDetailsViewModel();
-  // final WatchListViewModel viewModel = Get.find();
+
+  final WatchListViewModel _viewModel = Get.find();
 
   @override
   void initState() {
@@ -26,10 +27,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   @override
   void dispose() {
-    // Don't forget to unregister
-    // viewModel.isApiCalled.value = false;
 
     super.dispose();
+  }
+
+  void showSnakBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('This is a SnackBar'),
+        duration: Duration(seconds: 2),  // How long the SnackBar will stay visible
+      ),
+    );
   }
 
   @override
@@ -46,6 +54,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         }
 
         final movie = movieDetailsVM.movieDetails.value!;
+
 
         // Build the UI
         return SafeArea(
@@ -108,9 +117,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         child: FilledButton(
                           onPressed: () {
                             if (widget.fromWatchlist) {
-                            movieDetailsVM.removeFromWatchList(movie.id);
+                            movieDetailsVM.removeFromWatchList(movie.id,context);
                             } else {
-                              movieDetailsVM.addToFavorite(movie.id);
+                              movieDetailsVM.addToFavorite(movie.id,context);
                             }
                           },
                           style: FilledButton.styleFrom(
@@ -119,7 +128,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   10), // Corner radius of 10
                             ),
                           ),
-                          child: widget.fromWatchlist
+                          child: movieDetailsVM.isLoading == true? Text('Loading'):
+                          widget.fromWatchlist
                               ? Text('Remove from Watchlist')
                               : Text('Add to Watchlist'),
                         ),

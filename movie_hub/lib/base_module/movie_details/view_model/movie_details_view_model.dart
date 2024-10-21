@@ -1,12 +1,19 @@
+
+import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import '../model/movie_details_model.dart';
 import '../../../network/api_manager.dart';
 import '../../../network/api_end_point.dart';
+import '../../watch_list/view_model/watch_list_view_model.dart';
 
 class MovieDetailsViewModel extends GetxController {
   Rxn<MovieDetailsModel> movieDetails = Rxn<MovieDetailsModel>();
 
-  void addToFavorite(int movieId) async {
+  RxBool isLoading = false.obs;
+  WatchListViewModel watchListViewModel = Get.find();
+
+  void addToFavorite(int movieId, BuildContext context) async {
 
     final APIEndpoint endpoint = APIEndpoint(
         path: '/account/21572778/favorite?session_id=7f54d9be5fb4c228621bd97367ae3f420c962f22',
@@ -25,6 +32,7 @@ class MovieDetailsViewModel extends GetxController {
         'favorite': true,
       }
     );
+    isLoading.value = true;
 
     final result = await APIManager.instance.request<AddFavoriteSuccess>(
       endpoint,
@@ -32,18 +40,22 @@ class MovieDetailsViewModel extends GetxController {
     );
 
     // Handle the result
+    isLoading.value = false;
     if (result.data != null) {
       print('add to favorite success');
+      showToast(context, '${result.data!.statusMessage}');
       print(result.data!);
+      watchListViewModel.fetchFavoriteMovies();
     } else {
       // Handle the error
-      print('add to favorite fail');
+      print('${result.error?.message}');
+      // showToast(context, 'Add to watchlist fail');
       print('Error: ${result.error?.message}');
     }
 
   }
 
-  void removeFromWatchList(int movieId) async {
+  void removeFromWatchList(int movieId,BuildContext context) async {
 
     final APIEndpoint endpoint = APIEndpoint(
         path: '/account/21572778/favorite?session_id=7f54d9be5fb4c228621bd97367ae3f420c962f22',
@@ -63,18 +75,24 @@ class MovieDetailsViewModel extends GetxController {
         }
     );
 
+    isLoading.value = true;
+
     final result = await APIManager.instance.request<AddFavoriteSuccess>(
       endpoint,
           (data) => AddFavoriteSuccess.fromJson(data), // Convert the raw response into MovieDetailsModel
     );
 
     // Handle the result
+    isLoading.value = false;
+
     if (result.data != null) {
-      print('add to favorite success');
+      print('Remove form watchlist success');
+      showToast(context, '${result.data!.statusMessage}');
       print(result.data!);
+      watchListViewModel.fetchFavoriteMovies();
     } else {
-      // Handle the error
       print('add to favorite fail');
+      showToast(context, '${result.error?.message}');
       print('Error: ${result.error?.message}');
     }
 
@@ -107,5 +125,14 @@ class MovieDetailsViewModel extends GetxController {
       print('movie details fail');
       print('Error: ${result.error?.message}');
     }
+  }
+
+  void showToast(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

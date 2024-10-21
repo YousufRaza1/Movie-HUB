@@ -9,7 +9,7 @@ class WatchListViewModel extends GetxController {
   RxList<FavoriteMovie> listOfFavoriteMovies = <FavoriteMovie>[].obs;
   void fetchFavoriteMovies() async {
     // Define the endpoint with headers and query parameters
-    listOfFavoriteMovies = <FavoriteMovie>[].obs;
+    listOfFavoriteMovies.clear();
     final APIEndpoint endpoint = APIEndpoint(
       path: '/account/21572778/favorite/movies?language=en-US&page=1&session_id=7f54d9be5fb4c228621bd97367ae3f420c962f22',
       method: HTTPMethod.GET,
@@ -31,9 +31,9 @@ class WatchListViewModel extends GetxController {
     // Handle the result
     if (result.data != null) {
       if (result.data?.results!= null) {
-        listOfFavoriteMovies.addAll(result.data!.results!);
+        listOfFavoriteMovies.addAll(result.data!.results!); // Add new items
       }
-      print('fovorite success');
+      print('fetching favorite movies success');
     } else {
       // Handle the error
       print('favorite fail');

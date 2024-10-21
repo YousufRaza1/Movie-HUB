@@ -18,11 +18,6 @@ class _WatchListScreenState extends State<WatchListScreen> {
     _viewModel.fetchFavoriteMovies();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // You could also call fetchFavoriteMovies() here if needed
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +26,6 @@ class _WatchListScreenState extends State<WatchListScreen> {
         title: Text('Favorite Movies'),
       ),
       body: Obx(() {
-        // Check if there are any movies loaded
-        if (_viewModel.isApiCalled == false) {
-          _viewModel.fetchFavoriteMovies();
-          _viewModel.isApiCalled.value = true;
-          print('isApiCalled = ${_viewModel.isApiCalled}');
-        } else {
-          print('isApiCalled = ${_viewModel.isApiCalled}');
-        }
-        if (_viewModel.listOfFavoriteMovies.isEmpty) {
-          return Center(
-              child:
-                  CircularProgressIndicator()); // Show loading indicator while loading movies
-        }
         return ListView.builder(
           itemCount: _viewModel.listOfFavoriteMovies.length,
           itemBuilder: (context, index) {
@@ -119,6 +101,8 @@ class _WatchListScreenState extends State<WatchListScreen> {
       }),
     );
   }
+
+
 
   @override
   void dispose() {
