@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../view_model/watch_list_view_model.dart';
 import '../../movie_details/view/movie_details_screen.dart';
 import '../model/favorite_movie_List.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WatchListScreen extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _WatchListScreenState extends State<WatchListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorite Movies'),
+        title: Text(AppLocalizations.of(context)!.favoriteMovies),
       ),
       body: Obx(() {
         return ListView.builder(

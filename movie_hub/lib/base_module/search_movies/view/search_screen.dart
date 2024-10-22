@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../view_model/searched_movie_list_view_model.dart';
 import 'package:get/get.dart';
 import '../../movie_details/view/movie_details_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../common/network_connectivity_status.dart';
+import '../../../common/offline_message_view.dart';
 
 class SearchMoviesScreen extends StatefulWidget {
   const SearchMoviesScreen({super.key});
@@ -12,8 +15,10 @@ class SearchMoviesScreen extends StatefulWidget {
 
 class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final SearchedMoviesListViewModel viewModel = Get.put(SearchedMoviesListViewModel());
+  final SearchedMoviesListViewModel viewModel =
+      Get.put(SearchedMoviesListViewModel());
   final ScrollController _scrollController = ScrollController();
+  final NetworkStatusController _controller = Get.find();
 
   @override
   void initState() {
@@ -31,7 +36,6 @@ class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
 
     // Add scroll listener for pagination
     _scrollController.addListener(() {
-
       if (_scrollController.position.extentAfter <= 2000.0 &&
           !viewModel.isLoading.value) {
         viewModel.loadMoreMovies(_searchController.text);
@@ -53,90 +57,101 @@ class _SearchMoviesScreenState extends State<SearchMoviesScreen> {
         padding: const EdgeInsets.all(16.0),
         child: SafeArea(
           child: Obx(() => Column(
-            children: [
-              TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search movies...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.secondary,
-                  prefixIcon: Icon(Icons.search),
-                ),
-              ),
-              SizedBox(height: 16),
-              Text('Movies found: ${viewModel.movies.length}'),
-              SizedBox(height: 16),
-              Expanded(
-                child: GridView.builder(
-                  controller: _scrollController, // Attach scroll controller for pagination
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: viewModel.movies.length,
-                  itemBuilder: (context, index) {
-                    final movie = viewModel.movies[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(MovieDetailsScreen(movieId: movie.id, fromWatchlist: false));
-                      },
-                      child: Card(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Image.network(
-                                'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    movie.title,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).colorScheme.surface,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    'Rating: ${movie.voteAverage}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Theme.of(context).colorScheme.surface,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                children: [
+                  TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.searchMovies,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
                       ),
-                    );
-                  },
-                ),
-              ),
-              if (viewModel.isLoading.value) // Show loading indicator when fetching new data
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
-                ),
-            ],
-          )),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.secondary,
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  _controller.networkStatus == NetworkStatus.Online
+                      ? Expanded(
+                          child: GridView.builder(
+                            controller: _scrollController,
+                            // Attach scroll controller for pagination
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: viewModel.movies.length,
+                            itemBuilder: (context, index) {
+                              final movie = viewModel.movies[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.to(MovieDetailsScreen(
+                                      movieId: movie.id, fromWatchlist: false));
+                                },
+                                child: Card(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Image.network(
+                                          'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              movie.title,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              'Rating: ${movie.voteAverage}',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : Center(child: OfflineMessageWidget()),
+                  if (viewModel.isLoading
+                      .value && _controller.networkStatus == NetworkStatus.Online) // Show loading indicator when fetching new data
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                ],
+              )),
         ),
       ),
     );

@@ -5,10 +5,11 @@ import 'dart:async';
 import 'horizontal_movie_list.dart';
 import '../view_model/home_view_model.dart';
 import 'top_rated_movie_horizontal_card_view.dart';
-import 'top_rated_movie_horizontal_card_view.dart';
 import 'tranding_horizontal_card_view.dart';
-import '../../../video_player/video_player.dart';
-import 'favorite_movie_list_horizontal_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../common/network_connectivity_status.dart';
+import '../../../common/offline_message_view.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final viewModel = HomeViewController();
   int currentIndex = 0;
   Timer? _timer;
+  final NetworkStatusController _controller = Get.find();
 
 
   @override
@@ -50,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Obx(
           () => Column(
             children: [
-
+              _controller.networkStatus == NetworkStatus.Online?  Container(): OfflineMessageWidget(),
               viewModel.listOfUpcomingMovies.length == 0
                   ? BannerViewLoader()
                   : AnimatedSwitcher(
@@ -64,15 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              MovieTypeTitle(title: 'Popular movies'),
+              MovieTypeTitle(title: AppLocalizations.of(context)!.popularMovies),
               SizedBox(height: 5),
               viewModel.listOfPopularMovies.length > 0 ? HorizontalMovieList(movies: viewModel.listOfPopularMovies): HorizontalMovieListLoader(),
 
-              MovieTypeTitle(title: 'Top rated movies'),
+              MovieTypeTitle(title: AppLocalizations.of(context)!.topRatedMoviesTitle),
               SizedBox(height: 5),
               viewModel.listOfTopRatedMovies.length > 0 ? TopRatedHorizontalMovieList(movies: viewModel.listOfTopRatedMovies):HorizontalMovieListLoader(),
 
-              MovieTypeTitle(title: 'Trading movies'),
+              MovieTypeTitle(title: AppLocalizations.of(context)!.trendingMovies),
               SizedBox(height: 5),
               viewModel.listOfTrandingMovies.length > 0 ? TrandingHorizontalMovieList(movies: viewModel.listOfTrandingMovies):HorizontalMovieListLoader(),
               // MovieTypeTitle(title: 'Favorite movies'),

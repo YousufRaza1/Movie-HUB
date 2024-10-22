@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'home/view/home_screen.dart';
 import 'watch_list/view/watchlist_screen.dart';
-import 'package:get/get.dart';
-import 'watch_list/view_model/watch_list_view_model.dart';
+
 import 'search_movies/view/search_screen.dart';
+import 'Settings/View/setting_screen.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class BottomNavScreen extends StatefulWidget {
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
@@ -31,26 +34,29 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             _currentIndex = index; // Update the current tab
           });
         },
-        selectedItemColor: Theme.of(context).colorScheme.onPrimary, // Selected item color
-        unselectedItemColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+        // Selected item color
+        unselectedItemColor:
+            Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        type: BottomNavigationBarType.fixed, // Ensures all labels are visible
+        type: BottomNavigationBarType.fixed,
+        // Ensures all labels are visible
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: AppLocalizations.of(context)!.home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search',
+            label: AppLocalizations.of(context)!.search,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
-            label: 'Watchlist',
+            label: AppLocalizations.of(context)!.watchlist,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label:AppLocalizations.of(context)!.settings,
           ),
         ],
       ),
@@ -58,16 +64,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 }
 
-
-// Settings Screen
-class SettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Settings Screen', style: TextStyle(fontSize: 24)),
-    );
-  }
-}
 
 // Bookmark Screen
 class BookmarkScreen extends StatelessWidget {

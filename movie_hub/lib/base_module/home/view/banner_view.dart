@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import '../model/home_screen_models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class BannerView extends StatelessWidget {
   final UpcomingMovie movieResult;
@@ -76,7 +78,7 @@ class BannerView extends StatelessWidget {
                 SizedBox(height: 8),
                 // Release Date
                 Text(
-                  'Release Date: ${movieResult.releaseDate.toLocal().toShortDateString()}',
+                  '${AppLocalizations.of(context)!.releaseDate}: ${movieResult.releaseDate.toLocal().toShortDateString()}',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 16,
