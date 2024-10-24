@@ -22,6 +22,12 @@ class NetworkStatusController extends GetxController {
     _checkInitialConnection();
   }
 
+  Future<bool> isConnected() async {
+    var connectivityResult = await _connectivity.checkConnectivity();
+    return connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi;
+  }
+
   // Method to update the network status based on the connectivity result
   void _updateNetworkStatus(ConnectivityResult result) {
     switch (result) {

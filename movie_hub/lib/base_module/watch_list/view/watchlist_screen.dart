@@ -4,6 +4,8 @@ import '../view_model/watch_list_view_model.dart';
 import '../../movie_details/view/movie_details_screen.dart';
 import '../model/favorite_movie_List.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../common/network_connectivity_status.dart';
+import '../../../common/offline_message_view.dart';
 
 class WatchListScreen extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class WatchListScreen extends StatefulWidget {
 
 class _WatchListScreenState extends State<WatchListScreen> {
   final WatchListViewModel _viewModel = Get.find();
+  final NetworkStatusController _controller = Get.find();
+
 
   @override
   void initState() {
@@ -27,11 +31,19 @@ class _WatchListScreenState extends State<WatchListScreen> {
         title: Text(AppLocalizations.of(context)!.favoriteMovies),
       ),
       body: Obx(() {
+        bool isOffline = _controller.networkStatus.value == NetworkStatus.Offline;
         return ListView.builder(
-          itemCount: _viewModel.listOfFavoriteMovies.length,
+          itemCount: isOffline ? _viewModel.listOfFavoriteMovies.length + 1: _viewModel.listOfFavoriteMovies.length,
           itemBuilder: (context, index) {
-            final movie = _viewModel.listOfFavoriteMovies[index];
 
+            if (isOffline && index == 0) {
+              // Show the OfflineMessageWidget as the first item if offline
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: OfflineMessageWidget(),
+              );
+            }
+            final movie = _viewModel.listOfFavoriteMovies[isOffline ? index - 1 : index];
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(

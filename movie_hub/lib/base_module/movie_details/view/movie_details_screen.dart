@@ -43,6 +43,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         title: Text(AppLocalizations.of(context)!.movieDetails),
       ),
       body: Obx(() {
+
+
         if (_controller.networkStatus == NetworkStatus.Online) {
           if (movieDetailsVM.movieDetails.value == null) {
             return Center(child: CircularProgressIndicator());
