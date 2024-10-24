@@ -17,7 +17,7 @@ class BannerView extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     // Adjust the height based on the screen size
-    final bannerHeight = screenHeight * 0.3; // 30% of screen height
+    final bannerHeight = screenWidth * 0.7; // 30% of screen height
 
     return Padding(
       padding: const EdgeInsets.only(

@@ -93,12 +93,12 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
+                          FilledButton(
                             onPressed: _skipBackward,
-                            icon: Icon(Icons.replay_10),
+                            child: Icon(Icons.replay_10),
                           ),
                           SizedBox(width: 20),
-                          IconButton(
+                          FilledButton(
                             onPressed: () {
                               setState(() {
                                 widget.controller.value.isPlaying
@@ -107,16 +107,16 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                               });
                               _startHideTimer();
                             },
-                            icon: Icon(
+                            child: Icon(
                               widget.controller.value.isPlaying
                                   ? Icons.pause
                                   : Icons.play_arrow,
                             ),
                           ),
                           SizedBox(width: 20),
-                          IconButton(
+                          FilledButton(
                             onPressed: _skipForward,
-                            icon: Icon(Icons.forward_10),
+                            child: Icon(Icons.forward_10),
                           ),
                         ],
                       ),

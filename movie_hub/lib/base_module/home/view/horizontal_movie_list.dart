@@ -21,7 +21,7 @@ class HorizontalMovieList extends StatelessWidget {
         .height;
 
     return SizedBox(
-      height: screenHeight * 0.2, // 20% of screen height
+      height: 200, // 20% of screen height
       child: ListView.builder(
         scrollDirection: Axis.horizontal, // Horizontal scrolling
         itemCount: movies.length,

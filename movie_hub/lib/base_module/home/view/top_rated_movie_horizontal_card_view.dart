@@ -16,10 +16,9 @@ class TopRatedHorizontalMovieList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get the screen height to calculate 0.2 of it
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return SizedBox(
-      height: screenHeight * 0.2, // 20% of screen height
+      height: 200, // 20% of screen height
       child: ListView.builder(
         scrollDirection: Axis.horizontal, // Horizontal scrolling
         itemCount: movies.length,
