@@ -5,6 +5,7 @@ import '../../watch_list/view_model/watch_list_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../common/network_connectivity_status.dart';
 import '../../../common/offline_message_view.dart';
+import '../../../video_player/video_player.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -22,6 +23,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   final WatchListViewModel _viewModel = Get.find();
   final NetworkStatusController _controller = Get.find();
+  bool buttonPressed = false;
 
   @override
   void initState() {
@@ -64,11 +66,28 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                  Center(
                    child: Column(
                      children: [
-                       Image.network(
-                         'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
-                         fit: BoxFit.cover,
+                       // Image.network(
+                       //   'https://image.tmdb.org/t/p/w500${movie.backdropPath}',
+                       //   fit: BoxFit.cover,
+                       // ),
+                       if(MediaQuery.of(context).orientation != Orientation.landscape)
+                       SizedBox(
+                         height: MediaQuery.of(context).size.width * 0.6,
+                         width: MediaQuery.of(context).size.width, // Set width to fill the available space
+                         child: MyVideoPlayer(), // Directly use the MyVideoPlayer widget without Expanded
                        ),
+
+                       if(MediaQuery.of(context).orientation == Orientation.landscape)
+                         SizedBox(
+                           height: MediaQuery.of(context).size.height,
+                           width: MediaQuery.of(context).size.height * 1.5, // Set width to fill the available space
+                           child: MyVideoPlayer(), // Directly use the MyVideoPlayer widget without Expanded
+                         ),
+
+
+
                        SizedBox(height: 16),
+
                        Text(
                          movie.title,
                          style: TextStyle(
@@ -78,6 +97,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                      ],
                    ),
                  ),
+
                  SizedBox(height: 16),
 
                  // Overview
@@ -100,8 +120,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                      ),
                      Text('${movie.releaseDate.toLocal()}'.split(' ')[0]),
+
                    ],
                  ),
+
+
 
                  SizedBox(height: 16),
                  Row(
@@ -112,13 +135,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                        child: SizedBox(
                          height: 50, // Set the height
                          child: FilledButton(
-                           onPressed: () {
+                           onPressed: this.buttonPressed == false? () {
                              if (widget.fromWatchlist) {
                                movieDetailsVM.removeFromWatchList(movie.id,context);
                              } else {
                                movieDetailsVM.addToFavorite(movie.id,context);
                              }
-                           },
+                             setState(() {
+                               buttonPressed = true;
+                             });
+                           }: null,
                            style: FilledButton.styleFrom(
                              shape: RoundedRectangleBorder(
                                borderRadius: BorderRadius.circular(
@@ -127,8 +153,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                            ),
                            child: movieDetailsVM.isLoading == true? Text(AppLocalizations.of(context)!.loading):
                            widget.fromWatchlist
-                               ? Text(AppLocalizations.of(context)!.removeFromWatchlist)
-                               : Text(AppLocalizations.of(context)!.addToWatchlist),
+                               ? this.buttonPressed ? Text(AppLocalizations.of(context)!.removed_from_watchlist): Text(AppLocalizations.of(context)!.removeFromWatchlist)
+                               : this.buttonPressed ? Text(AppLocalizations.of(context)!.added_to_watchlist): Text(AppLocalizations.of(context)!.addToWatchlist),
                          ),
                        ),
                      )

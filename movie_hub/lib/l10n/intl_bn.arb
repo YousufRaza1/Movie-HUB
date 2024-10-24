@@ -30,5 +30,7 @@
        "systemTheme": "সিস্টেম",
        "lightTheme": "লাইট",
        "darkTheme": "ডার্ক",
-       "offlineMessage": "আপনি বর্তমানে অফলাইন আছেন"
+       "offlineMessage": "আপনি বর্তমানে অফলাইন আছেন",
+       "added_to_watchlist": "ওয়াচলিস্টে যুক্ত করা হয়েছে",
+       "removed_from_watchlist": "ওয়াচলিস্ট থেকে সরানো হয়েছে"
 }

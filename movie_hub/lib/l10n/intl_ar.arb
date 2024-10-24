@@ -30,5 +30,7 @@
         "systemTheme": "النظام",
         "lightTheme": "فاتح",
         "darkTheme": "داكن",
-        "offlineMessage": "أنت غير متصل بالإنترنت حالياً"
+        "offlineMessage": "أنت غير متصل بالإنترنت حالياً",
+        "added_to_watchlist": "أضيف إلى قائمة المشاهدة",
+        "removed_from_watchlist": "أزيل من قائمة المشاهدة"
 }

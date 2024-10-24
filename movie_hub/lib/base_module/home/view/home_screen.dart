@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               MovieTypeTitle(title: AppLocalizations.of(context)!.trendingMovies),
               SizedBox(height: 5),
               viewModel.listOfTrandingMovies.length > 0 ? TrandingHorizontalMovieList(movies: viewModel.listOfTrandingMovies):HorizontalMovieListLoader(),
+              SizedBox(height: 10),
               // MovieTypeTitle(title: 'Favorite movies'),
               // SizedBox(height: 5),
               // viewModel.listOfFavoriteMovies.length > 0 ? HorizontalFavoriteMovieList(movies: viewModel.listOfFavoriteMovies): HorizontalMovieListLoader(),

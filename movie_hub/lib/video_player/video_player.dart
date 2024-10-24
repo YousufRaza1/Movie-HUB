@@ -1,116 +1,212 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'full_screen_video.dart';
 
-class CustomVideoPlayer extends StatefulWidget {
-  final String videoUrl;
-
-  const CustomVideoPlayer({required this.videoUrl});
-
+class MyVideoPlayer extends StatefulWidget {
   @override
-  _CustomVideoPlayerState createState() => _CustomVideoPlayerState();
+  _MyVideoPlayerState createState() => _MyVideoPlayerState();
 }
 
-class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
+class _MyVideoPlayerState extends State<MyVideoPlayer> {
   late VideoPlayerController _controller;
-  bool _isPlaying = false;
-  bool _isLoading = true;
-  bool _hasError = false;
+  bool _showControls = true;
+  Timer? _hideTimer;
 
   @override
   void initState() {
     super.initState();
-    _initializeVideo();
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'),
+    )..initialize().then((_) {
+        setState(() {});
+      });
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _startHideTimer();
   }
 
-  void _initializeVideo() async {
-    // Using the new networkUrl constructor
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+  void _startHideTimer() {
+    _hideTimer?.cancel();
+    _hideTimer = Timer(Duration(seconds: 3), () {
+      setState(() {
+        _showControls = false;
+      });
+    });
+  }
 
-    try {
-      await _controller.initialize();
-      setState(() {
-        _isLoading = false;
-        _hasError = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _hasError = true;
-      });
-    }
+  void _toggleControls() {
+    setState(() {
+      _showControls = !_showControls;
+      if (_showControls) {
+        _startHideTimer();
+      }
+    });
+  }
+
+  void _skipForward() {
+    final currentPosition = _controller.value.position;
+    final targetPosition = currentPosition + Duration(seconds: 10);
+    _controller.seekTo(targetPosition);
+    _startHideTimer();
+  }
+
+  void _skipBackward() {
+    final currentPosition = _controller.value.position;
+    final targetPosition = currentPosition - Duration(seconds: 10);
+    _controller.seekTo(targetPosition);
+    _startHideTimer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _toggleControls,
+      child: Center(
+        child: _controller.value.isInitialized
+            ? Stack(
+                children: [
+                  Row(
+                    children: [
+                      Spacer(),
+                      AspectRatio(
+                        aspectRatio: 1.5,
+                        child: VideoPlayer(_controller),
+                      ),
+                      Spacer()
+                    ],
+                  ),
+                  // Buffering indicator
+                  if (_controller.value.isBuffering)
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+
+                  // Show buttons only when _showControls is true
+                  if (_showControls)
+                    Center(
+                      child: Column(
+                        children: [
+                          Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: _skipBackward,
+                                icon: Icon(Icons.replay_10),
+                              ),
+                              SizedBox(width: 20),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.value.isPlaying
+                                        ? _controller.pause()
+                                        : _controller.play();
+                                  });
+                                  _startHideTimer();
+                                },
+                                icon: Icon(
+                                  _controller.value.isPlaying
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                ),
+                              ),
+                              SizedBox(width: 20),
+                              IconButton(
+                                onPressed: _skipForward,
+                                icon: Icon(Icons.forward_10),
+                              ),
+
+                              // Fullscreen Button
+                            ],
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                    ),
+
+                  if (_showControls)
+                    Positioned(
+                      top: 20,
+                      right: 20,
+                      child: DropdownButton<double>(
+                        value: _controller.value.playbackSpeed,
+                        items: [0.5, 1.0, 1.5, 2.0].map((speed) {
+                          return DropdownMenuItem(
+                            value: speed,
+                            child: Text('${speed}x',
+                                style: TextStyle(fontSize: 12)),
+                          );
+                        }).toList(),
+                        onChanged: (speed) {
+                          _controller.setPlaybackSpeed(speed!);
+                        },
+                      ),
+                    ),
+
+                  if (_showControls)
+                    Positioned(
+                      bottom: 10,
+                      left: 5,
+                      right: 5,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 10),
+                              Center(
+                                child: SizedBox(
+                                  width: 50,
+                                  child: Text(
+                                      '${_controller.value.position.inMinutes}:${_controller.value.position.inSeconds.remainder(60)}'),
+                                ),
+                              ),
+                              Expanded(
+                                child: Slider(
+                                  value: _controller.value.position.inSeconds
+                                      .toDouble(),
+                                  min: 0,
+                                  max: _controller.value.duration.inSeconds
+                                      .toDouble(),
+                                  onChanged: (value) {
+                                    _controller.seekTo(
+                                        Duration(seconds: value.toInt()));
+                                  },
+                                ),
+                              ),
+                              Text(
+                                  '${_controller.value.duration.inMinutes}:${_controller.value.duration.inSeconds.remainder(60)}'),
+                              IconButton(
+                                icon: Icon(Icons.fullscreen),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          FullScreenVideoPlayer(_controller),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              )
+            : CircularProgressIndicator(),
+      ),
+    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _hideTimer?.cancel();
     super.dispose();
-  }
-
-  void _togglePlayPause() {
-    setState(() {
-      if (_controller.value.isPlaying) {
-        _controller.pause();
-        _isPlaying = false;
-      } else {
-        _controller.play();
-        _isPlaying = true;
-      }
-    });
-  }
-
-  void _forward10Seconds() {
-    final newPosition = _controller.value.position + Duration(seconds: 10);
-    _controller.seekTo(newPosition);
-  }
-
-  void _rewind10Seconds() {
-    final newPosition = _controller.value.position - Duration(seconds: 10);
-    _controller.seekTo(newPosition);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Video player view
-        _isLoading
-            ? CircularProgressIndicator() // Show loading while the video initializes
-            : _hasError
-            ? Text(
-          'Error loading video',
-          style: TextStyle(color: Colors.red),
-        )
-            : AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: VideoPlayer(_controller),
-        ),
-        SizedBox(height: 20),
-        // Video controls
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Rewind 10 seconds button
-            IconButton(
-              onPressed: _rewind10Seconds,
-              icon: Icon(Icons.replay_10, color: Colors.white),
-            ),
-            // Play/Pause button
-            IconButton(
-              onPressed: _togglePlayPause,
-              icon: Icon(
-                _isPlaying ? Icons.pause : Icons.play_arrow,
-                color: Colors.white,
-              ),
-            ),
-            // Forward 10 seconds button
-            IconButton(
-              onPressed: _forward10Seconds,
-              icon: Icon(Icons.forward_10, color: Colors.white),
-            ),
-          ],
-        ),
-      ],
-    );
   }
 }

@@ -30,5 +30,7 @@
        "systemTheme": "System",
        "lightTheme": "Light",
        "darkTheme": "Dark",
-       "offlineMessage": "You are currently offline"
+       "offlineMessage": "You are currently offline",
+       "added_to_watchlist": "Added to Watchlist",
+       "removed_from_watchlist": "Removed from Watchlist"
 }
