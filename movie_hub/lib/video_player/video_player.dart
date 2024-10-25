@@ -4,6 +4,8 @@ import 'package:video_player/video_player.dart';
 import 'full_screen_video.dart';
 
 class MyVideoPlayer extends StatefulWidget {
+  final String videoUrl;
+  MyVideoPlayer({required this.videoUrl});
   @override
   _MyVideoPlayerState createState() => _MyVideoPlayerState();
 }
@@ -13,12 +15,15 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   bool _showControls = true;
   Timer? _hideTimer;
 
+
+
   @override
   void initState() {
     super.initState();
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(
-          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'),
+          widget.videoUrl
+      ),
     )..initialize().then((_) {
         setState(() {});
       });

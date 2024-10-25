@@ -75,7 +75,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 .size
                                 .width, // Set width to fill the available space
                             child:
-                                MyVideoPlayer(), // Directly use the MyVideoPlayer widget without Expanded
+                                MyVideoPlayer(videoUrl: movieDetailsVM.getRandomMovieLink()), // Directly use the MyVideoPlayer widget without Expanded
                           ),
 
                         if (MediaQuery.of(context).orientation ==
@@ -85,7 +85,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             width: MediaQuery.of(context).size.height * 1.5,
                             // Set width to fill the available space
                             child:
-                                MyVideoPlayer(), // Directly use the MyVideoPlayer widget without Expanded
+                            MyVideoPlayer(videoUrl: movieDetailsVM.getRandomMovieLink()), // Directly use the MyVideoPlayer widget without Expanded
                           ),
 
                         SizedBox(height: 16),

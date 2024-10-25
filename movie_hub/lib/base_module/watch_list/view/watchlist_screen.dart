@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../view_model/watch_list_view_model.dart';
 import '../../movie_details/view/movie_details_screen.dart';
-import '../model/favorite_movie_List.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../common/network_connectivity_status.dart';
 import '../../../common/offline_message_view.dart';
@@ -28,7 +27,7 @@ class _WatchListScreenState extends State<WatchListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.favoriteMovies),
+        title: Text(AppLocalizations.of(context)!.watchlist),
       ),
       body: Obx(() {
         bool isOffline = _controller.networkStatus.value == NetworkStatus.Offline;
