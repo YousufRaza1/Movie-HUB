@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_hub/base_module/Authentication/View/login_screen.dart';
 import 'common/theme_manager/theme_manager.dart';
 import 'base_module/buttom_navigation_screen.dart';
 import 'package:get/get.dart';
@@ -6,8 +7,17 @@ import 'base_module/watch_list/view_model/watch_list_view_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'common/network_connectivity_status.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   Get.put(WatchListViewModel());
   runApp(const MyApp());
 }
@@ -41,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: appController.themeMode,
       theme: ThemeDataStyle.light,
       darkTheme: ThemeDataStyle.dark,
-      home: BottomNavScreen(),
+      home: LoginScreen(),
     ));
   }
 }
