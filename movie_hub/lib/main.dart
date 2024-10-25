@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'common/network_connectivity_status.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'base_module/Authentication/ViewModel/AuthViewModel.dart';
 
 void main() async {
 
@@ -31,6 +32,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final MyAppController appController = Get.put(MyAppController());
   final NetworkStatusController _controller = Get.put(NetworkStatusController());
+  final AuthService authService = Get.put(AuthService());
 
 
   @override

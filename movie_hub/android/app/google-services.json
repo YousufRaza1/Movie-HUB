@@ -12,7 +12,12 @@
           "package_name": "com.example.movieHub"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "49439811717-eiprovrpkbog4ksq86gskl5c96gnkfim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD4GZvMzlRQeW5FlFPWGg56M2UvuSwpJQE"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49439811717-5jfue5abjb89co78pk1pqb566rm9j4ul.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "49439811717-4dh0an47onk14hvtq3bs2t5nm919rdls.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.movieHub"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,20 @@
           "package_name": "com.example.movie_hub"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "49439811717-eevcunc6obnge97g5uegqt4cp3e9oahc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.movie_hub",
+            "certificate_hash": "ad7288a3c0a03bac564eb01d4a807b4af6230c14"
+          }
+        },
+        {
+          "client_id": "49439811717-eiprovrpkbog4ksq86gskl5c96gnkfim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD4GZvMzlRQeW5FlFPWGg56M2UvuSwpJQE"
@@ -39,7 +69,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49439811717-5jfue5abjb89co78pk1pqb566rm9j4ul.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "49439811717-4dh0an47onk14hvtq3bs2t5nm919rdls.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.movieHub"
+              }
+            }
+          ]
         }
       }
     }

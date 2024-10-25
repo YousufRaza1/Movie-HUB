@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../View/HomeScreen.dart';
 import '../../buttom_navigation_screen.dart';
+import 'package:get/get.dart';
 
-class AuthService {
+class AuthService extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Rx<bool> isLoading = false.obs;
+
   Future<void> resetPassword(String email, BuildContext context) async {
+    isLoading.value = true;
     try {
       await _auth.sendPasswordResetEmail(email: email);
+      isLoading.value = false;
       print('success');
     } catch (e) {
       print('fail');
@@ -17,7 +22,9 @@ class AuthService {
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
+    isLoading.value = true;
     GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    isLoading.value = false;
     if (gUser == null) return;
     GoogleSignInAuthentication gAuth = await gUser!.authentication;
     final cradential = GoogleAuthProvider.credential(
@@ -36,6 +43,7 @@ class AuthService {
 
   Future<void> createUserWithEmailAndPassword(
       String email, String pass, BuildContext context) async {
+    isLoading.value = true;
     try {
       print('started');
       final credential = await _auth.createUserWithEmailAndPassword(
@@ -63,16 +71,19 @@ class AuthService {
     } catch (e) {
       print('error Firebase.....${e}');
     }
+    isLoading.value = false;
   }
 
   Future<void> signInWithEmailAndPassword(
       String email, String password, BuildContext context) async {
+    isLoading.value = true;
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       print('Success login');
+
 
       if (credential.user != null) {
         Navigator.pushReplacement(
@@ -95,5 +106,6 @@ class AuthService {
     } catch (e) {
       print(e);
     }
+    isLoading.value = false;
   }
 }
