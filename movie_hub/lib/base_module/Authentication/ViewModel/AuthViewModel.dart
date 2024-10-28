@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:movie_hub/base_module/Authentication/View/login_screen.dart';
 import '../../buttom_navigation_screen.dart';
 import 'package:get/get.dart';
+import '../View/login_screen.dart';
 
 class AuthService extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -31,7 +33,6 @@ class AuthService extends GetxController {
     GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
     if (gUser == null) {
-       showToast('Something went wrong');
       return ;
     }
 
@@ -69,12 +70,13 @@ class AuthService extends GetxController {
 
       // Navigate to the new screen if the user is successfully created
       if (credential.user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  BottomNavScreen()), // Replace with your target screen
-        );
+        Get.offAll(() => LoginScreen());
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //           LoginScreen()), // Replace with your target screen
+        // );
       }
     } on FirebaseAuthException catch (e) {
       isLoading.value = false;

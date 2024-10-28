@@ -4,6 +4,7 @@ import '../ViewModel/AuthViewModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'reset_password_dialog.dart';
 import 'package:get/get.dart';
+import 'social_media_login.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,6 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final AuthService _auth = Get.find();
+  bool _obscureText = true;
 
   void _onEmailChanged(String value) {
     _auth.userEmail.value = value;
@@ -28,20 +30,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     print("Current value: $value");
   }
 
-  final List<Socialmedia> medias = [
-    Socialmedia(
-        name: 'Google',
-        imageUrl:
-        'https://cdn.dribbble.com/users/904380/screenshots/2230701/google-logo-revised-spinner_still_2x.gif?resize=400x300&vertical=center'),
-    Socialmedia(
-        name: 'Twitter',
-        imageUrl:
-        'https://cdn.mos.cms.futurecdn.net/z3bn6deaxmrjmQHNEkpcZE-1200-80.jpg'),
-    Socialmedia(
-        name: 'Facebook',
-        imageUrl:
-        'https://static.vecteezy.com/system/resources/previews/018/930/476/original/facebook-logo-facebook-icon-transparent-free-png.png')
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Material(
                         child: TextField(
                           controller: _passwordController,
+                          obscureText: _obscureText,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: theme.colorScheme.surface,
@@ -157,16 +146,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide.none,
                             ),
-                            hintText: 'Enter email here',
-                            hintStyle: TextStyle(
-                              color: theme.hintColor,
-                            ),
-                            suffixIcon: Icon(
-                              Icons.check_circle,
-                              color: theme.iconTheme.color,
+                            hintText: 'Enter your password here',
+                            hintStyle: TextStyle(color: theme.hintColor),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: theme.iconTheme.color,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
                             ),
                           ),
                           onChanged: (text) {
+                            print(text);
+
                             _auth.isValidPassword(text);
                           },
                         ),
@@ -180,7 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 25),
                 _buildDivider(textColor),
                 SizedBox(height: 25),
-                SocialMediaLoginSection(media: medias),
+                SocialMediaLoginSection(),
                 SizedBox(height: 25),
                 _buildLoginRow(context, textColor),
               ],
@@ -313,53 +311,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         Spacer(),
       ],
-    );
-  }
-}
-
-class Socialmedia {
-  String name;
-  String imageUrl;
-
-  Socialmedia({required this.name, required this.imageUrl});
-}
-
-class SocialMediaLoginSection extends StatelessWidget {
-  final List<Socialmedia> media;
-
-   SocialMediaLoginSection({super.key, required this.media});
-  final authViewModel = AuthService();
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: media.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-
-            print('tap on ${media[index].name}');
-            authViewModel.signInWithGoogle(context);
-
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.withOpacity(0.5), width: 1),
-            ),
-            child: Image.network(media[index].imageUrl),
-          ),
-        );
-      },
     );
   }
 }
