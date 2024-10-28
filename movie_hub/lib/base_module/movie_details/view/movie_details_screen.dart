@@ -156,7 +156,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                           movie.id, context);
                                     }
                                     setState(() {
-                                      buttonPressed = true;
+                                      buttonPressed = false;
                                     });
                                   },
                             style: FilledButton.styleFrom(
