@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Get.to(BottomNavScreen());
                           },
                           child: Text(
-                            'Skip now',
+                            'Continue as a guest',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.primary,
                             ),

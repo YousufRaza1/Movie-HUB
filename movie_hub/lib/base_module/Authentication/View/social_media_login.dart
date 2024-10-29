@@ -25,9 +25,8 @@ class SocialMediaLoginSection extends StatelessWidget {
         child: Center(
           child: Row(
             children: [
-              // Spacer(),
-              // // Image.network('https://cdn.dribbble.com/users/904380/screenshots/2230701/google-logo-revised-spinner_still_2x.gif?resize=400x300&vertical=center',height: 40,width: 40),
               Spacer(),
+
               Text(
                 'Continue with Google',
                 style: theme.textTheme.bodyLarge
