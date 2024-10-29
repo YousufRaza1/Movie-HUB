@@ -29,6 +29,9 @@ The Movie Hub app allows users to explore, discover, and track movies across var
 
 ## Screenshots
 
+[![Watch the video](https://www.youtube.com/watch?v=jFRXrr7oEs4)
+
+
 <!-- Add screenshots or UI previews once available -->
 <img src="Screenshots/Image%20(7).jpeg" alt="Image description" width="200" height="400">
 <img src="Screenshots/Image%20(8).jpeg" alt="Image description" width="200" height="400">
