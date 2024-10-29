@@ -2,6 +2,8 @@
 
 The Movie Hub app allows users to explore, discover, and track movies across various genres. It features a user-friendly interface where users can browse top-rated, popular, and upcoming films. The app includes a search function for quick movie lookup and utilizes Firebase for secure authentication. Designed for smooth navigation and real-time updates.
 
+[Watch the demo video](https://www.youtube.com/watch?v=1hb5CGXrFKU)
+
 ## Features
 
 - **Authentication:** Authentication using Email, password and Google sign in and forgot passward.
