@@ -1,11 +1,12 @@
-# Weather Track
+# Movie_Hub
 
-Weather Track is a Flutter-based mobile application designed to provide real-time weather updates, including both current weather and hourly forecasts for selected locations.
+The Movie Hub app allows users to explore, discover, and track movies across various genres. It features a user-friendly interface where users can browse top-rated, popular, and upcoming films. The app includes a search function for quick movie lookup and utilizes Firebase for secure authentication. Designed for smooth navigation and real-time updates.
 
 ## Features
 
-- **Authentication:** Authentication using Email, password and Google sign in.
-- **Forgot password:** You can change your password if you forgot this.
+- **Authentication:** Authentication using Email, password and Google sign in and forgot passward.
+<video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" controls="controls" style="max-width: 59%;">
+</video>
 - **Current Weather:** Displays real-time weather data, including temperature, humidity, wind speed, and more.
 - **Hourly Forecast:** Provides weather forecast for the upcoming hours.
 - **Multiple Locations:** Track weather for different locations by entering a city.
@@ -51,4 +52,5 @@ Weather Track is a Flutter-based mobile application designed to provide real-tim
 
    ```bash
    git clone https://github.com/YousufRaza1/Weather-Broadcast
+
 
