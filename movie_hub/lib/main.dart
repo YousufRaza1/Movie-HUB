@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_hub/base_module/Authentication/View/login_screen.dart';
+import 'package:movie_hub/base_module/Settings/View/setting_screen.dart';
 import 'common/theme_manager/theme_manager.dart';
-import 'base_module/buttom_navigation_screen.dart';
 import 'package:get/get.dart';
 import 'base_module/watch_list/view_model/watch_list_view_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,6 +10,25 @@ import 'common/network_connectivity_status.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'base_module/Authentication/ViewModel/AuthViewModel.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Handling a background message: ${message.data['screen']}');
+}
+
+
+
+void requestNotificationPermissions() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  print('User granted permission: ${settings.authorizationStatus}');
+}
+
 
 void main() async {
 
@@ -18,6 +37,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
 
   Get.put(WatchListViewModel());
   runApp(const MyApp());
@@ -33,6 +55,35 @@ class _MyAppState extends State<MyApp> {
   final MyAppController appController = Get.put(MyAppController());
   final NetworkStatusController _controller = Get.put(NetworkStatusController());
   final AuthService authService = Get.put(AuthService());
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    requestNotificationPermissions();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Message data: ${message.data}');
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Message clicked! ${message.messageId}');
+      Get.to(SettingsScreen());
+    });
+
+
+    // Fetch the FCM token for the device (optional)
+    _getFCMToken();
+  }
+
+  Future<void> _getFCMToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print('FCM Token: $token');
+  }
 
 
   @override
