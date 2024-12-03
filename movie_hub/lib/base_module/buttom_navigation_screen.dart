@@ -6,6 +6,7 @@ import 'search_movies/view/search_screen.dart';
 import 'Settings/View/setting_screen.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'home_modified/view/home_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
 
   // List of widget pages corresponding to each tab
   final List<Widget> _pages = [
-    HomeScreen(),
+    HomeScreenNew(),
     SearchMoviesScreen(),
     WatchListScreen(),
     SettingsScreen(),

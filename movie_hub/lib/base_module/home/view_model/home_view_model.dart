@@ -7,15 +7,12 @@ import '../model/top_rated_movie_model.dart';
 import '../model/tranding_movie_list_model.dart';
 import '../../watch_list/model/favorite_movie_List.dart';
 
-
-
 class HomeViewController extends GetxController {
   RxList<UpcomingMovie> listOfUpcomingMovies = <UpcomingMovie>[].obs;
-  RxList<PopularMovie> listOfPopularMovies =  <PopularMovie>[].obs;
-  RxList<TopRatedMovie> listOfTopRatedMovies =  <TopRatedMovie>[].obs;
+  RxList<PopularMovie> listOfPopularMovies = <PopularMovie>[].obs;
+  RxList<TopRatedMovie> listOfTopRatedMovies = <TopRatedMovie>[].obs;
   RxList<TrandingMovie> listOfTrandingMovies = <TrandingMovie>[].obs;
-  RxList<FavoriteMovie> listOfFavoriteMovies =  <FavoriteMovie>[].obs;
-
+  RxList<FavoriteMovie> listOfFavoriteMovies = <FavoriteMovie>[].obs;
 
   void fetchIncomingMovies() async {
     // Define the endpoint with headers and query parameters
@@ -25,7 +22,7 @@ class HomeViewController extends GetxController {
       headers: {
         'accept': 'application/json',
         'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
       },
       queryParams: {
         'page': '1', // Example page number, you can modify it as needed
@@ -35,7 +32,8 @@ class HomeViewController extends GetxController {
     // Call the API manager
     final result = await APIManager.instance.request<UpcomingMovieList>(
       endpoint,
-          (data) => UpcomingMovieList.fromJson(data), // Convert the raw response into PopularMoviesList
+      (data) => UpcomingMovieList.fromJson(
+          data), // Convert the raw response into PopularMoviesList
     );
 
     // Handle the result
@@ -51,11 +49,6 @@ class HomeViewController extends GetxController {
     }
   }
 
-
-
-
-
-
   void fetchPopularMovies() async {
     // Define the endpoint with headers and query parameters
     final APIEndpoint endpoint = APIEndpoint(
@@ -64,7 +57,7 @@ class HomeViewController extends GetxController {
       headers: {
         'accept': 'application/json',
         'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
       },
       queryParams: {
         'page': '1', // Example page number, you can modify it as needed
@@ -74,7 +67,8 @@ class HomeViewController extends GetxController {
     // Call the API manager
     final result = await APIManager.instance.request<PopularMovieList>(
       endpoint,
-          (data) => PopularMovieList.fromJson(data), // Convert the raw response into PopularMoviesList
+      (data) => PopularMovieList.fromJson(
+          data), // Convert the raw response into PopularMoviesList
     );
 
     // Handle the result
@@ -98,7 +92,7 @@ class HomeViewController extends GetxController {
       headers: {
         'accept': 'application/json',
         'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
       },
       queryParams: {
         'page': '1', // Example page number, you can modify it as needed
@@ -108,7 +102,8 @@ class HomeViewController extends GetxController {
     // Call the API manager
     final result = await APIManager.instance.request<TopRatedMoviesList>(
       endpoint,
-          (data) => TopRatedMoviesList.fromJson(data), // Convert the raw response into PopularMoviesList
+      (data) => TopRatedMoviesList.fromJson(
+          data), // Convert the raw response into PopularMoviesList
     );
 
     // Handle the result
@@ -124,7 +119,6 @@ class HomeViewController extends GetxController {
     }
   }
 
-
   void fetchTrandingMoives() async {
     // Define the endpoint with headers and query parameters
     final APIEndpoint endpoint = APIEndpoint(
@@ -133,7 +127,7 @@ class HomeViewController extends GetxController {
       headers: {
         'accept': 'application/json',
         'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGMwN2RlNTA1ZTM0ZjIyY2FhYWZlNzI0ZDc1ZmVjNiIsIm5iZiI6MTcyOTA1NjE1NS43MTEwNjQsInN1YiI6IjY3MGU2YjJkMGI4MDA1MzdkNzVjZjM1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vu4IZ5ObJWkshT1D14mcP70iKTRaF4PCsDSHL0kgitc',
       },
       queryParams: {
         'page': '1', // Example page number, you can modify it as needed
@@ -143,7 +137,8 @@ class HomeViewController extends GetxController {
     // Call the API manager
     final result = await APIManager.instance.request<TrandingMoviesList>(
       endpoint,
-          (data) => TrandingMoviesList.fromJson(data), // Convert the raw response into PopularMoviesList
+      (data) => TrandingMoviesList.fromJson(
+          data), // Convert the raw response into PopularMoviesList
     );
 
     // Handle the result
@@ -158,8 +153,4 @@ class HomeViewController extends GetxController {
       print('Error: ${result.error?.message}');
     }
   }
-
 }
-
-
-
