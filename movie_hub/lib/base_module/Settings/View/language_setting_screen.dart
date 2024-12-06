@@ -19,7 +19,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Obx(() => Column(
           children: [
             // Display current selected language
             Text(
@@ -35,9 +35,12 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
                     title: Text('English'),
                     onTap: () {
                       appController.changeLanguage('en');
-                      setState(() {}); // Refresh the UI
+                      setState(() {
+                        final langu = appController.fetchPreferredLanguage();
+                        print('userprefered = ${langu}');
+                      }); // Refresh the UI
                     },
-                    trailing: appController.locale.languageCode == 'en'
+                    trailing: appController.userSelectedLanguage == 'en'
                         ? Icon(Icons.check, color: Colors.green)
                         : null,
                   ),
@@ -45,9 +48,12 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
                     title: Text('বাংলা'),
                     onTap: () {
                       appController.changeLanguage('bn');
-                      setState(() {}); // Refresh the UI
+                      setState(() {
+                        final langu = appController.fetchPreferredLanguage();
+                        print('userprefered = ${langu}');
+                      }); // Refresh the UI
                     },
-                    trailing: appController.locale.languageCode == 'bn'
+                    trailing: appController.userSelectedLanguage == 'bn'
                         ? Icon(Icons.check, color: Colors.green)
                         : null,
                   ),
@@ -55,17 +61,34 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
                     title: Text('عربي'),
                     onTap: () {
                       appController.changeLanguage('ar');
-                      setState(() {}); // Refresh the UI
+                      setState(() {
+                        final langu = appController.fetchPreferredLanguage();
+                        print('userprefered = ${langu}');
+                      }); // Refresh the UI
                     },
-                    trailing: appController.locale.languageCode == 'ar'
+                    trailing: appController.userSelectedLanguage == 'ar'
                         ? Icon(Icons.check, color: Colors.green)
                         : null,
                   ),
+                  ListTile(
+                    title: Text('System'),
+                    onTap: () {
+                      appController.changeLanguage('system');
+                      setState(() async {
+                        final langu =
+                        await appController.fetchPreferredLanguage();
+                        print('userprefered = ${langu}');
+                      }); // Refresh the UI
+                    },
+                    trailing: appController.userSelectedLanguage == 'system'
+                        ? Icon(Icons.check, color: Colors.green)
+                        : null,
+                  )
                 ],
               ),
             ),
           ],
-        ),
+        ),)
       ),
     );
   }
